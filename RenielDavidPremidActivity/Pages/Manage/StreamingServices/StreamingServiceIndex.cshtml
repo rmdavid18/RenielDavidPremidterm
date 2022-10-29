@@ -1,0 +1,70 @@
+﻿@page
+@model RenielDavidPremidActivity.Pages.Manage.StreamingServices.StreamingServiceIndexModel
+
+<h1>Streaming Services</h1>
+
+<div class="search">
+    <i class="bi bi-search"></i>
+    <input type="text" class="form-control" placeholder="Search" id="search">
+</div>
+
+
+@{
+    if (Model.View != null && Model.View.StreamingServices != null && Model.View.StreamingServices.Items != null && Model.View.StreamingServices.Items.Count > 0)
+    {
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Abbreviation</th>
+                </tr>
+            </thead>
+            <tbody>
+            @{
+                foreach (var StreamingService in Model?.View?StreamingServices.Items)
+                {
+                    <tr>
+                        <th scope="row">@StreamingService.Title</th>
+                        <td>@StreamingService.Description</td>
+                        <td>@StreamingService.Abbreviation</td>
+                    </tr>
+                }            
+            }
+            </tbody>
+        </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                @{
+                    if(Model?.View?.StreamingServices.PageIndex > 1)
+                    {
+                         <li class="page-item"><a class="page-link" href="/Manage/StreamServices?pageIndex=@(Model?.View?.StreamingServices.PageIndex-1)&pageSize=@(Model?.View?.StreamingServices.PageSize)&sortBy=@(Model?.View?.Roles.SortBy)&sortOrder=@(Model?.View?.Roles.SortOrder)">Previous</a></li>
+                    }
+
+                    <li class="page-item"><span class="page-link">page @Model?.View?.Roles.PageIndex of @Model?.View?.Roles.PageCount (@Model?.View?.StreamingServices.TotalRows total rows)</span></li>
+
+
+                    if(Model?.View?.StreamingServices.PageIndex < Model?.View?.StreamingServices.PageCount){
+                         <li class="page-item"><a class="page-link" href="/Manage/StreamServices?pageIndex=@(Model?.View?.StreamingServices.PageIndex+1)&pageSize=@(Model?.View?.StreamingServices.PageSize)&sortBy=@(Model?.View?.StreamingServices.SortBy)&sortOrder=@(Model?.View?.StreamingServices.SortOrder)">Next</a></li>
+                    }
+                }
+            </ul>
+        </nav>
+    }
+    else
+    {
+    <div>There are no records to show.</div>
+    }
+}
+
+@section Scripts
+{
+    <script>
+        $("#search").keyup(function (event) {
+            if (event.keyCode === 13) {
+                window.location = "/Manage/StreamServices?keyword=" + $("#search").val();
+            }
+        });
+    </script>
+}

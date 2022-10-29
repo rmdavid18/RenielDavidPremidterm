@@ -1,0 +1,71 @@
+﻿@page
+@model RenielDavidPremidActivity.Pages.Manage.Videos.VideoIndexModel
+<h3>Video</h3>
+
+<div class="search">
+    <i class="bi bi-search"></i>
+    <input type="text" class="form-control" placeholder="Search" id="search">
+</div>
+@{
+   
+    if (Model.View != null && Model.View.Videos.Items != null && Model.View.Videos.Items.Count > 0)
+    {
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">DateOfPublished</th>
+                    <th scope="col">Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var Video in Model?.View?.Videos.Items)
+                    {
+                        <tr>
+                            <th scope="row">@Video.Title</th>
+                            <td>@Video.Description</td>
+                            <td>@Video.DateOfPublished</td>
+                            <td>@Video.Type</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                @{
+                    if (Model?.View?.Videos.PageIndex > 1)
+                    {
+                        <li class="page-item"><a class="page-link" href="/Manage/Videos?pageIndex=@(Model?.View?.Videos.PageIndex-1)&pageSize=@(Model?.View?.Videos.PageSize)&sortBy=@(Model?.View?.Videos.SortBy)&sortOrder=@(Model?.View?.Videos.SortOrder)">Previous</a></li>
+                    }
+
+                    <li class="page-item"><span class="page-link">page @Model?.View?.Videos.PageIndex of @Model?.View?.Videos.PageCount (@Model?.View?.Videos.TotalRows total rows)</span></li>
+
+
+                    if (Model?.View?.Videos.PageIndex < Model?.View?.Videos.PageCount)
+                    {
+                        <li class="page-item"><a class="page-link" href="/Manage/Videos?pageIndex=@(Model?.View?.Videos.PageIndex+1)&pageSize=@(Model?.View?.Videos.PageSize)&sortBy=@(Model?.View?.Videos.SortBy)&sortOrder=@(Model?.View?.Videos.SortOrder)">Next</a></li>
+                    }
+                }
+            </ul>
+        </nav>
+    }
+    else
+    {
+        <div>There are no records to show.</div>
+    }
+}
+
+@section Scripts
+    {
+    <script>
+        $("#search").keyup(function (event) {
+            if (event.keyCode === 13) {
+                window.location = "/manage/roles?keyword=" + $("#search").val();
+            }
+        });
+    </script>
+}
